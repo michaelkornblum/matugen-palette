@@ -64,16 +64,6 @@ A Node.js web application that generates Material Design 3 color palettes from i
 - `POST /api/generate-palette` - Upload image and get generated palette
 - `GET /api/health` - Check server status
 
-## Frontend Integration
-
-The frontend code needs two updates:
-
-1. **Replace `extractColors` function** with the async version that posts to the server (see `frontend-update.js`)
-
-2. **Add `displayMatugenPalette` function** to parse matugen's JSON output
-
-You can manually integrate these changes into `public/index.html` or use the code provided in `frontend-update.js`.
-
 ## Troubleshooting
 
 - **"matugen: command not found"**: Make sure matugen is installed and in your PATH
