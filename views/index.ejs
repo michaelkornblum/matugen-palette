@@ -24,6 +24,10 @@
                 <img id="imagePreview" src="<%= imagePath %>" alt="Uploaded image">
             </div>
 
+            <div class="search-container">
+                <input type="text" id="colorSearch" placeholder="Search colors by name..." />
+            </div>
+
             <div class="palette-container">
                 <%- include('partials/palette', { palette: palette }) %>
             </div>

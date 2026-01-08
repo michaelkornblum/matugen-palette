@@ -20,3 +20,18 @@ function copyToClipboard(text, name) {
         alert('Failed to copy to clipboard');
     });
 }
+
+// Search/filter colors by name
+document.getElementById('colorSearch')?.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const colorCards = document.querySelectorAll('.color-card');
+    
+    colorCards.forEach(card => {
+        const colorName = card.getAttribute('data-color-name').toLowerCase();
+        if (colorName.includes(searchTerm)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});

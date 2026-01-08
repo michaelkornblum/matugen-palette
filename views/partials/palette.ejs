@@ -3,7 +3,7 @@
         <% for (const [colorName, colorVariants] of Object.entries(palette.colors)) { %>
             <% if (!colorName.toLowerCase().includes('dark') && !colorName.toLowerCase().includes('light')) { %>
                 <% const colorValue = colorVariants.default || colorVariants.light || Object.values(colorVariants)[0]; %>
-                <div class="color-card" onclick="copyToClipboard('<%= colorValue %>', '<%= colorName %>')">
+                <div class="color-card" data-color-name="<%= colorName.replace(/_/g, '-') %>" onclick="copyToClipboard('<%= colorValue %>', '<%= colorName %>')">
                     <div class="color-swatch" style="background-color: <%= colorValue %>;"></div>
                     <div class="color-info">
                         <div class="color-name"><%= colorName.replace(/_/g, '-') %></div>
