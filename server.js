@@ -83,8 +83,6 @@ async function generatePalette(imagePath) {
     const paletteData = JSON.parse(jsonOutput);
     return paletteData;
   } catch (error) {
-    console.error('Matugen error:', error);
-    console.error('Raw output:', error.stdout || 'N/A');
     throw new Error(`Failed to generate palette: ${error.message}`);
   }
 }
@@ -94,7 +92,7 @@ async function cleanupFile(filePath) {
   try {
     await fs.unlink(filePath);
   } catch (error) {
-    console.error('Cleanup error:', error);
+    // Silently ignore cleanup errors
   }
 }
 
@@ -123,9 +121,6 @@ app.post('/generate', upload.single('image'), async (req, res) => {
   try {
     // Generate palette using matugen
     const palette = await generatePalette(imagePath);
-
-    // Debug: log the palette structure
-    console.log('Palette structure:', JSON.stringify(palette, null, 2));
 
     // Serve the image from uploads directory
     const imageUrl = '/uploads/' + path.basename(imagePath);
@@ -198,8 +193,6 @@ app.get('/api/health', async (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
       return res.status(400).json({ error: 'File size too large. Maximum is 10MB.' });
@@ -213,11 +206,7 @@ app.use((err, req, res, next) => {
 // Start server
 async function startServer() {
   await ensureUploadsDir();
-  
-  app.listen(PORT, () => {
-    console.log(`🎨 Matugen Palette Generator running on http://localhost:${PORT}`);
-    console.log(`📁 Uploads directory: ${path.resolve('uploads')}`);
-  });
+  app.listen(PORT);
 }
 
-startServer().catch(console.error);
+startServer();
