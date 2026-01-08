@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matugen Color Palette Generator</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Matugen Palette Generator</h1>
+        <p class="subtitle">Upload an image to generate a Material Design 3 color palette</p>
+
+        <% if (error) { %>
+            <div class="error"><%= error %></div>
+        <% } %>
+
+        <% if (success) { %>
+            <div class="success-message"><%= success %></div>
+        <% } %>
+
+        <% if (palette) { %>
+            <div class="preview-section">
+                <img id="imagePreview" src="<%= imagePath %>" alt="Uploaded image">
+            </div>
+
+            <div class="palette-container">
+                <%- include('partials/palette', { palette: palette }) %>
+            </div>
+
+            <div style="text-align: center;">
+                <form action="/" method="GET">
+                    <button type="submit" class="back-btn">Upload Another Image</button>
+                </form>
+            </div>
+        <% } else { %>
+            <form action="/generate" method="POST" enctype="multipart/form-data">
+                <div class="upload-section">
+                    <p style="font-size: 1.2em; color: #666; margin-bottom: 20px;">
+                        Choose an image to generate palette
+                    </p>
+                    <input type="file" id="fileInput" name="image" accept="image/*" required>
+                    <label for="fileInput" class="upload-btn" style="display: inline-block; cursor: pointer;">Choose Image</label>
+                </div>
+
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <img id="imagePreview" alt="Preview">
+                    <div>
+                        <button type="submit" class="upload-btn">Generate Palette</button>
+                    </div>
+                </div>
+            </form>
+        <% } %>
+
+        <div class="footer">
+            Powered by <a href="https://github.com/InioX/matugen" target="_blank">matugen</a>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

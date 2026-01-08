@@ -11,10 +11,16 @@ const execAsync = promisify(exec);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Set up EJS as the view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -94,7 +100,53 @@ async function cleanupFile(filePath) {
 
 // Routes
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.render('index', { 
+    palette: null, 
+    imagePath: null, 
+    error: null, 
+    success: null 
+  });
+});
+
+app.post('/generate', upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.render('index', {
+      palette: null,
+      imagePath: null,
+      error: 'No image file uploaded',
+      success: null
+    });
+  }
+
+  const imagePath = req.file.path;
+
+  try {
+    // Generate palette using matugen
+    const palette = await generatePalette(imagePath);
+
+    // Debug: log the palette structure
+    console.log('Palette structure:', JSON.stringify(palette, null, 2));
+
+    // Serve the image from uploads directory
+    const imageUrl = '/uploads/' + path.basename(imagePath);
+
+    res.render('index', {
+      palette: palette,
+      imagePath: imageUrl,
+      error: null,
+      success: 'Palette generated successfully!'
+    });
+  } catch (error) {
+    // Clean up the uploaded file on error
+    await cleanupFile(imagePath);
+
+    res.render('index', {
+      palette: null,
+      imagePath: null,
+      error: error.message,
+      success: null
+    });
+  }
 });
 
 app.post('/api/generate-palette', upload.single('image'), async (req, res) => {
