@@ -4,6 +4,13 @@ A Node.js web application that generates Material Design 3 color palettes from i
 
 ## Prerequisites
 
+### For Docker Setup (Recommended)
+
+- **Docker**: Install from https://docs.docker.com/get-docker/
+- **Docker Compose**: Usually included with Docker Desktop
+
+### For Local Setup
+
 1. **Install matugen**: Follow instructions at https://github.com/InioX/matugen
    ```bash
    # Example for Linux (check repo for your OS)
@@ -26,6 +33,36 @@ A Node.js web application that generates Material Design 3 color palettes from i
    ```
 
 ## Running the Application
+
+### Option 1: Using Docker (Recommended)
+
+Docker provides an isolated environment with matugen pre-installed:
+
+1. Build and start the container:
+   ```bash
+   docker-compose up -d
+   ```
+
+2. Open your browser to: `http://localhost:3000`
+
+3. Upload an image to generate a Material Design 3 color palette
+
+4. To stop the container:
+   ```bash
+   docker-compose down
+   ```
+
+5. To view logs:
+   ```bash
+   docker-compose logs -f
+   ```
+
+6. To rebuild after changes:
+   ```bash
+   docker-compose up -d --build
+   ```
+
+### Option 2: Running Locally
 
 1. Start the server:
    ```bash

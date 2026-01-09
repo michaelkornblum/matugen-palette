@@ -1,0 +1,15 @@
+services:
+  matugen-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount uploads directory to persist uploaded images
+      - ./uploads:/app/uploads
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    container_name: matugen-palette-app
